@@ -1,0 +1,35 @@
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    ports:
+      - "127.0.0.1:8000:8000"
+    volumes:
+      - "${AUDITDDI_MODEL_ARTIFACT_DIR:-./demo_artifacts}:/app/model_artifacts:ro"
+      - ./backend/state:/app/state
+    environment:
+      PORT: 8000
+      AUDITDDI_CHECKPOINT_DIR: /app/model_artifacts
+      PXDDI_CHECKPOINT_PATH: ${AUDITDDI_CHECKPOINT_PATH:-${PXDDI_CHECKPOINT_PATH:-auditddi_seven_branch_candidate.pt}}
+      AUDITDDI_SEVEN_BRANCH_FEATURE_BUNDLE: ${AUDITDDI_SEVEN_BRANCH_FEATURE_BUNDLE:-/app/model_artifacts/seven_branch_features.npz}
+      PXDDI_ALLOWED_ORIGINS: ${AUDITDDI_ALLOWED_ORIGINS:-${PXDDI_ALLOWED_ORIGINS:-http://localhost:3000,http://127.0.0.1:3000}}
+      PXDDI_TRUSTED_HOSTS: ${AUDITDDI_TRUSTED_HOSTS:-${PXDDI_TRUSTED_HOSTS:-localhost,127.0.0.1,backend}}
+      PXDDI_ENABLE_DOCS: ${AUDITDDI_ENABLE_DOCS:-${PXDDI_ENABLE_DOCS:-false}}
+      PXDDI_DEPLOYMENT_MODE: ${AUDITDDI_DEPLOYMENT_MODE:-${PXDDI_DEPLOYMENT_MODE:-development}}
+      PXDDI_API_KEY: ${AUDITDDI_API_KEY:-${PXDDI_API_KEY:-}}
+      PXDDI_RATE_LIMIT_PER_MINUTE: ${AUDITDDI_RATE_LIMIT_PER_MINUTE:-${PXDDI_RATE_LIMIT_PER_MINUTE:-0}}
+      PXDDI_ALLOW_UNSAFE_PICKLE: ${AUDITDDI_ALLOW_UNSAFE_PICKLE:-${PXDDI_ALLOW_UNSAFE_PICKLE:-0}}
+      PXDDI_AUTH_ENABLED: ${AUDITDDI_AUTH_ENABLED:-${PXDDI_AUTH_ENABLED:-true}}
+      PXDDI_AUTH_STATE_DIR: /app/state
+      PXDDI_AUTH_BOOTSTRAP_TOKEN: ${AUDITDDI_AUTH_BOOTSTRAP_TOKEN:-${PXDDI_AUTH_BOOTSTRAP_TOKEN:-}}
+    read_only: true
+    tmpfs:
+      - /tmp
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    pids_limit: 256
+    mem_limit: ${AUDITDDI_BACKEND_MEMORY_LIMIT:-${PXDDI_BACKEND_MEMORY_LIMIT:-4g}}
+    cpus: ${AUDITDDI_BACKEND_CPU_LIMIT:-${PXDDI_BACKEND_CPU_LIMIT:-2.0}}

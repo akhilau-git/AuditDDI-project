@@ -1,0 +1,6 @@
+{
+  "name": "AuditDDI",
+  "description": "Preclinical safety intelligence platform integrating live PubChem, ChEMBL, and openFDA APIs for DDI prediction analysis, ADMET property checking, toxicity evaluation, ICH M12 regulatory compliance, and synergistic adverse drug reactions.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
